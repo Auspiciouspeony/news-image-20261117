@@ -202,7 +202,7 @@ def ill_gulf(draw, box):
                   (x0 + 90, y1 - 26), (x0, y1 - 34)], fill=LAND)
     f = font(SANS_B, 12)
     draw.text((x0 + 10, y0 + 6), "IRAN", font=f, fill=INK)
-    draw.text((x0 + 150, y1 - 16), "ARABIA", font=f, fill=GREY)
+    draw.text((x0 + 150, y1 - 34), "ARABIA", font=f, fill=GREY)
     # Bahrain radar dome on the lower shore
     bx, by = x0 + 108, y1 - 44
     draw.ellipse([bx - 13, by - 13, bx + 13, by + 2], fill=(240, 240, 240),
@@ -224,7 +224,8 @@ def ill_gulf(draw, box):
                               qy + 16 * math.sin(ang))],
                   fill=(232, 120, 40), width=3)
     draw.ellipse([qx - 6, qy - 6, qx + 6, qy + 6], fill=(252, 210, 110))
-    draw.text((qx - 30, qy + 20), "QESHM", font=f, fill=INK)
+    draw.text((qx - 22, qy - 14), "QESHM", font=f, fill=INK,
+              anchor="ra")
     # tanker at Hormuz, lower right
     tx, ty = x1 - 96, y1 - 30
     draw.polygon([(tx, ty), (tx + 70, ty), (tx + 62, ty - 14),
@@ -344,14 +345,15 @@ def ill_measles(draw, box):
         draw.rectangle([fx, y0 + 10, fx + 18, y0 + 22], fill=(240, 240, 240))
         f = font(SANS_B, 10)
         draw.text((fx + 23, y0 + 40), code, font=f, fill=INK, anchor="ma")
-    # virus: spiked circle, clear of the flags above it
-    vx, vy = x0 + 150, y0 + 45
+    # virus: spiked circle in the gap between the MX and BO labels.
+    # It used to sit on top of the BO label and hide it.
+    vx, vy = x0 + 124, y0 + 46
     for a in range(8):
         ang = a * math.pi / 4
-        draw.line([(vx + 8 * math.cos(ang), vy + 8 * math.sin(ang)),
-                   (vx + 11 * math.cos(ang), vy + 11 * math.sin(ang))],
+        draw.line([(vx + 7 * math.cos(ang), vy + 7 * math.sin(ang)),
+                   (vx + 10 * math.cos(ang), vy + 10 * math.sin(ang))],
                   fill=RED, width=2)
-    draw.ellipse([vx - 8, vy - 8, vx + 8, vy + 8], fill=RED)
+    draw.ellipse([vx - 7, vy - 7, vx + 7, vy + 7], fill=RED)
 
 
 def ill_cop(draw, box):
@@ -374,7 +376,7 @@ def ill_cop(draw, box):
         draw.line([(dx + 10, y0 + 17 + i * 9), (dx + 66, y0 + 17 + i * 9)],
                   fill=GREY, width=2)
     f = font(SANS_B, 13)
-    draw.text((dx + 38, y0 + 44), "DRAFT", font=f, fill=RED, anchor="ma")
+    draw.text((dx + 38, y0 + 38), "DRAFT", font=f, fill=RED, anchor="ma")
 
 
 def ill_gaza(draw, box):
@@ -411,7 +413,6 @@ def ill_mongolia(draw, box):
     for i in range(3):
         draw.line([(dx + 10, y0 + 16 + i * 8), (dx + 70, y0 + 16 + i * 8)],
                   fill=GREY, width=2)
-    draw.line([(dx + 48, y0 + 44), (dx + 70, y0 + 44)], fill=INK, width=2)
     f = fit_font(draw, "RESIGNATION", SANS_B, 11, 76)
     draw.text((dx + 40, y0 + 38), "RESIGNATION", font=f, fill=RED,
               anchor="ma")
@@ -420,12 +421,14 @@ def ill_mongolia(draw, box):
 def ill_serbia(draw, box):
     x0, y0, x1, y1 = box
     draw.rectangle([x0, y0, x1, y1], fill=(226, 232, 244))
-    # parliament semicircle: red seats 140, blue 103
-    cx, cy = x0 + 94, y1 - 8
+    # parliament semicircle: red seats 140, blue 103. Flat arc, kept
+    # below the corner labels: the tall arc used to draw its dots
+    # straight through "STUDENTS" / "VUCIC BLOC".
+    cx, cy = x0 + 94, y1 - 6
     for i in range(12):
         ang = math.pi + i * math.pi / 11
-        px = cx + 56 * math.cos(ang)
-        py = cy + 36 * math.sin(ang)
+        px = cx + 44 * math.cos(ang)
+        py = cy + 18 * math.sin(ang)
         col = RED if i < 7 else (40, 60, 160)
         draw.ellipse([px - 5, py - 5, px + 5, py + 5], fill=col)
     f = font(SANS_B, 15)
@@ -433,8 +436,8 @@ def ill_serbia(draw, box):
     draw.text((x1 - 12, y0 + 2), "103", font=f, fill=(40, 60, 160),
               anchor="ra")
     f2 = font(SANS_B, 10)
-    draw.text((x0 + 12, y0 + 20), "STUDENTS", font=f2, fill=GREY)
-    draw.text((x1 - 12, y0 + 20), "VUCIC BLOC", font=f2, fill=GREY,
+    draw.text((x0 + 12, y0 + 18), "STUDENTS", font=f2, fill=GREY)
+    draw.text((x1 - 12, y0 + 18), "VUCIC BLOC", font=f2, fill=GREY,
               anchor="ra")
 
 
@@ -496,9 +499,6 @@ def ill_trial(draw, box):
     draw.rectangle([gx - 4, gy - 16, gx + 22, gy - 4], fill=(120, 80, 40))
     draw.line([(gx + 8, gy - 4), (gx - 6, gy + 12)], fill=(120, 80, 40),
               width=5)
-    f = font(SANS_B, 12)
-    draw.text((x0 + 14, y0 + 44), "5 CHARGES", font=f, fill=RED)
-
 
 # ------------------------------------------------------------------- map
 
